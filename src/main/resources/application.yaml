@@ -1,0 +1,27 @@
+spring:
+    application:
+        name: graphql-learning
+
+    datasource:
+        url: jdbc:mysql://localhost:3306/graphql_demo
+        username: goutam
+        password: P@ssw0rd
+        driver-class-name: com.mysql.cj.jdbc.Driver
+
+    jpa:
+        hibernate:
+            ddl-auto: update   # dev only
+        database-platform: org.hibernate.dialect.MySQLDialect
+        show-sql: true
+        properties:
+            hibernate:
+                format_sql: true
+
+    graphql:
+        path: /graphql
+        graphiql:
+            enabled: true
+
+logging:
+    level:
+        org.hibernate.SQL: DEBUG
