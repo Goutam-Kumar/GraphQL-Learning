@@ -12,10 +12,23 @@ import org.springframework.stereotype.Controller
 class UserGraphQLController(
     private val repository: UserRepository
 ) {
+    // =====================
+    // READ ALL USERS
+    // =====================
     @QueryMapping
     suspend fun users(): List<User> =
         repository.findAll()
 
+    // =====================
+    // READ ONE USER BY ID
+    // =====================
+    @QueryMapping
+    suspend fun user(@Argument id: Long): User =
+        repository.findById(id).orElseThrow { RuntimeException("User not found with id $id") }
+
+    // =====================
+    // CREATE USER
+    // =====================
     @Transactional
     @MutationMapping
     suspend fun createUser(
@@ -23,6 +36,9 @@ class UserGraphQLController(
         @Argument email: String
     ): User = repository.save(User(name = name, email = email))
 
+    // =====================
+    // UPDATE USER Profile Picture
+    // =====================
     @Transactional
     @MutationMapping
     suspend fun updateProfilePicture(
@@ -34,5 +50,19 @@ class UserGraphQLController(
 
         val modifiedUser = user.copy(profilePictureUrl = profilePictureUrl)
         return repository.save(modifiedUser)
+    }
+
+    // =====================
+    // DELETE USER
+    // =====================
+    @Transactional
+    @MutationMapping
+    suspend fun deleteUser(
+        @Argument userId: Long
+    ): Boolean {
+        val user = repository.findById(userId)
+            .orElseThrow { RuntimeException("User not found") }
+        repository.delete(user)
+        return true
     }
 }
