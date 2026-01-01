@@ -4,10 +4,12 @@ type Query {
 
 type Mutation {
     createUser(name: String!, email: String): User!
+    updateProfilePicture(userId: ID!,profilePictureUrl: String): User!
 }
 
 type User {
     id: ID!,
     name: String!,
-    email: String!
+    email: String!,
+    profilePictureUrl: String
 }

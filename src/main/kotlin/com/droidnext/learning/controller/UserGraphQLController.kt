@@ -22,4 +22,17 @@ class UserGraphQLController(
         @Argument name: String,
         @Argument email: String
     ): User = repository.save(User(name = name, email = email))
+
+    @Transactional
+    @MutationMapping
+    suspend fun updateProfilePicture(
+        @Argument userId: Long,
+        @Argument profilePictureUrl: String? = null
+    ): User {
+        val user = repository.findById(userId)
+            .orElseThrow { RuntimeException("User not found") }
+
+        val modifiedUser = user.copy(profilePictureUrl = profilePictureUrl)
+        return repository.save(modifiedUser)
+    }
 }
