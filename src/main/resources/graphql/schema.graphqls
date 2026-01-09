@@ -1,17 +1,107 @@
+#All Queries
 type Query {
     users: [User!]!
     user(id: ID!): User!
+
+    articles: [Article!]
+    articleById(id: ID!): Article
+
+    categories: [Category!]
+
+    tags: [Tag!]
 }
 
+#All Mutations
 type Mutation {
     createUser(name: String!, email: String): User!
     updateProfilePicture(userId: ID!,profilePictureUrl: String): User!
     deleteUser(userId: ID!): Boolean!
+
+    createArticle(input: CreateArticleInput!): Article!
+
+    createCategory(input: CreateCategoryInput!): Category!
+    updateCategory(input: UpdateCategoryInput!): Category!
+    deleteCategory(categoryId: ID!): Boolean!
+
+    createTag(input: CreateTagInput!): Tag!
+    updateTag(input: UpdateTagInput!): Tag!
+    deleteTag(tagId: ID!): Boolean!
+
+    addComment(input: AddCommentInput!): Comment!
 }
 
 type User {
-    id: ID!,
-    name: String!,
-    email: String!,
+    id: ID!
+    name: String!
+    email: String!
     profilePictureUrl: String
+    articles: [Article!]
+}
+
+type Article {
+    id: ID!
+    title: String!
+    content: String!
+    status: ArticleStatus!
+    author: User!
+    category: Category!
+    tags: [Tag!]
+    comments: [Comment!]
+    createdAt: String!
+}
+
+type Category {
+    id: ID!
+    name: String!
+    articles: [Article!]
+}
+
+type Tag {
+    id: ID!
+    name: String!
+}
+
+type Comment {
+    id: ID!
+    content: String!
+    article: Article!
+    user: User!
+    createdAt: String!
+}
+
+enum ArticleStatus {
+    DRAFT
+    PUBLISHED
+    ARCHIVED
+}
+
+input CreateArticleInput {
+    authorId: ID!
+    title: String!
+    content: String!
+    categoryId: ID!
+    tagIds: [ID!]
+}
+
+input CreateCategoryInput {
+    name: String!
+}
+
+input UpdateCategoryInput {
+    id: ID!
+    name: String!
+}
+
+input CreateTagInput {
+    name: String!
+}
+
+input UpdateTagInput {
+    id: ID!
+    name: String!
+}
+
+input AddCommentInput {
+    articleId: ID!
+    content: String!
 }
