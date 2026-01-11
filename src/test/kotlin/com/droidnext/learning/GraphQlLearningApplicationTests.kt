@@ -8,6 +8,7 @@ class GraphQlLearningApplicationTests {
 
 	@Test
 	fun contextLoads() {
+		//disabled for CI
 	}
 
 }
