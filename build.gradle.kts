@@ -34,7 +34,7 @@ dependencies {
 	runtimeOnly("com.mysql:mysql-connector-j")
 
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
-
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 kotlin {
