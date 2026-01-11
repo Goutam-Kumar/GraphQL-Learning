@@ -4,11 +4,15 @@ type Query {
     user(id: ID!): User!
 
     articles: [Article!]
-    articleById(id: ID!): Article
+    articlesPostedByUser(userId: ID!): [Article!]
+    articleById(id: ID!): Article!
+    articlesByCategory(categoryId: ID!): [Article!]
 
     categories: [Category!]
 
     tags: [Tag!]
+
+    comments(articleId: ID!): [Comment!]
 }
 
 #All Mutations
@@ -18,6 +22,11 @@ type Mutation {
     deleteUser(userId: ID!): Boolean!
 
     createArticle(input: CreateArticleInput!): Article!
+    changeArticleStatus(articleId: ID!, status: ArticleStatus): Article!
+    updateArticleCategory(articleId: ID!, categoryId: ID!): Article!
+    updateArticleTag(articleId: ID!, tagIds: [ID!]!): Article!
+    updateArticleContent(articleId: ID!, content: String!): Article!
+    deleteArticle(articleId: ID!): Boolean!
 
     createCategory(input: CreateCategoryInput!): Category!
     updateCategory(input: UpdateCategoryInput!): Category!
@@ -28,6 +37,8 @@ type Mutation {
     deleteTag(tagId: ID!): Boolean!
 
     addComment(input: AddCommentInput!): Comment!
+    editComment(input: EditCommentInput!): Comment!
+    deleteComment(userId: ID!, commentId: ID!): Boolean!
 }
 
 type User {
@@ -103,5 +114,12 @@ input UpdateTagInput {
 
 input AddCommentInput {
     articleId: ID!
+    userId: ID!
+    content: String!
+}
+
+input EditCommentInput {
+    userId: ID!
+    commentId: ID!
     content: String!
 }
