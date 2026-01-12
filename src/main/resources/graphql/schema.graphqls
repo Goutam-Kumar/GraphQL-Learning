@@ -1,10 +1,11 @@
 #All Queries
 type Query {
+    me: User!
     users: [User!]!
     user(id: ID!): User!
 
     articles: [Article!]
-    articlesPostedByUser(userId: ID!): [Article!]
+    articlesPostedByUser: [Article!]
     articleById(id: ID!): Article!
     articlesByCategory(categoryId: ID!): [Article!]
 
@@ -17,9 +18,10 @@ type Query {
 
 #All Mutations
 type Mutation {
-    createUser(name: String!, email: String): User!
-    updateProfilePicture(userId: ID!,profilePictureUrl: String): User!
-    deleteUser(userId: ID!): Boolean!
+    registerUser(name: String!, email: String!, password: String!): User!
+    updateProfilePicture(profilePictureUrl: String): User!
+    login(email: String!, password: String!): AuthResponse!
+    deleteUser: Boolean!
 
     createArticle(input: CreateArticleInput!): Article!
     changeArticleStatus(articleId: ID!, status: ArticleStatus): Article!
@@ -80,6 +82,11 @@ type Comment {
     createdAt: String!
 }
 
+type AuthResponse {
+    user: User!
+    token: String!
+}
+
 enum ArticleStatus {
     DRAFT
     PUBLISHED
@@ -87,7 +94,6 @@ enum ArticleStatus {
 }
 
 input CreateArticleInput {
-    authorId: ID!
     title: String!
     content: String!
     categoryId: ID!
